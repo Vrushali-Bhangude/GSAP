@@ -1,0 +1,19 @@
+div{
+    height: 200px;
+    width: 200px;
+    background-color: aqua;
+    border: 2px solid black;
+    border-radius: 10px;
+    background: url("img.jpg");
+    background-size: cover;
+    margin-left: 40px;
+}
+div i{
+    font-size: 50px;
+    color: rgb(0, 0, 14);
+    
+}
+#two{
+    background: url("img.jpg");
+    background-size: cover;
+}
