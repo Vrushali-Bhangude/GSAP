@@ -1,0 +1,223 @@
+GSAP (GreenSock Animation Platform) Notes
+
+#####  1. Introduction to GSAP
+
+GSAP is a high-performance JavaScript animation library used for creating smooth, complex animations on the web. It works with DOM elements, SVG, Canvas, and WebGL.
+
+Key Features:
+
+   -- High performance (optimized for 60fps animations)
+   -- Cross-browser compatibility
+   -- Flexible timeline control
+   -- Rich easing options
+   -- Plugin system (ScrollTrigger, MorphSVG, Draggable, etc.)
+   -- Lightweight & modular
+
+##### 2. Core Concepts
+
+A. Tweens (Basic Animations)
+   ---- A tween is an animation that transitions a property from one state to another.
+
+***  Types of Tweens:
+
+    1 - gsap.to() → Animates to given values.
+
+        Example : gsap.to(".box", { x: 100, opacity: 1, duration: 1 });
+            
+    2 - gsap.from() → Animates from given values.
+
+        Example : gsap.from(".box", { y: 50, opacity: 0, duration: 1 });
+
+    3 - gsap.fromTo() → Defines both start and end values.
+
+        Example : gsap.fromTo(".box", 
+                   { x: -100, opacity: 0 }, 
+                   { x: 0, opacity: 1, duration: 2 }
+                     );
+    
+     4 - gsap.set() → Instantly sets values (no animation).
+
+        Example : gsap.set(".box", { opacity: 0, scale: 0.5 });
+
+
+
+B. Timelines (Chaining Animations)
+
+    --- Timelines allow sequencing multiple tweens with precise control.
+
+*** Basic Timeline Example:
+
+   const tl = gsap.timeline();
+
+tl.to(".box1", { x: 100, duration: 1 })
+  .to(".box2", { y: 50, duration: 0.5 })
+  .to(".box3", { rotation: 360, duration: 2 });
+
+
+*** Timeline Position Parameters:
+
+
+< → Start at the same time as the previous tween.
+
++=1 → Start 1 second after the previous tween ends.
+
+-=0.5 → Start 0.5 seconds before the previous tween ends.
+
+Example : 
+
+tl.to(".a", { x: 100 })
+  .to(".b", { y: 50 }, "<") // Runs with ".a"
+  .to(".c", { opacity: 0 }, "+=1") // 1s after ".b" ends
+  .to(".d", { scale: 2 }, "-=0.5"); // 0.5s before ".c" ends
+
+
+C.Easing (Animation Curves)
+     --- GSAP provides various easing functions for natural motion.
+
+Common Eases:
+
+"linear" → No easing.
+
+"power1.inOut" → Smooth acceleration/deceleration.
+
+"bounce.out" → Bouncing effect.
+
+"elastic" → Spring-like motion.
+
+Example : 
+
+gsap.to(".box", { 
+  x: 200, 
+  ease: "elastic.out(1, 0.5)", 
+  duration: 2 
+});
+
+
+
+D. Staggering Animations
+    ---- Animate multiple elements with delays.
+
+**Basic Stagger:
+
+Example: 
+
+gsap.to(".item", {
+  y: 50,
+  opacity: 1,
+  stagger: 0.2 // 0.2s delay between each
+});
+
+
+**Advanced Stagger:
+
+Example : 
+
+gsap.from(".grid-item", {
+  scale: 0,
+  stagger: {
+    each: 0.1,
+    from: "center", // "start", "end", "edges", or grid coords
+    grid: [3, 3] // Stagger in a 3x3 grid
+  }
+});
+
+
+3. GSAP Plugins
+
+
+A. ScrollTrigger (Scroll-Based Animations)
+
+Example : 
+
+gsap.to(".box", {
+  x: 500,
+  scrollTrigger: {
+    trigger: ".box",
+    start: "top center", // When trigger hits center of viewport
+    end: "bottom top", // When bottom hits top of viewport
+    scrub: 1, // Smooth scrubbing
+    pin: true // Pins element while scrolling
+  }
+});
+
+
+B. MorphSVG (Shape Morphing)
+
+Example : 
+
+gsap.to("#shape", {
+  duration: 2,
+  morphSVG: "#target-shape",
+  repeat: -1,
+  yoyo: true
+});
+
+
+C. Draggable (Drag & Drop)
+
+Example : 
+
+Draggable.create(".box", {
+  type: "x,y", // Allow dragging in x and y
+  bounds: "#container", // Constrain dragging
+  inertia: true // Smooth momentum
+});
+
+
+4. Performance Tips
+
+Use transform properties (x, y, scale) instead of top, left, width, height.
+
+Enable will-change in CSS:
+
+css
+.box { will-change: transform, opacity; }
+Batch DOM updates (GSAP optimizes this automatically).
+
+Use lazy: true in ScrollTrigger for offscreen animations.
+
+Avoid animating box-shadow or filter (performance-heavy).
+
+
+
+5. Common Use Cases
+
+A. Page Load Animations
+
+Example : 
+
+gsap.from("header", { y: -50, opacity: 0, duration: 1 });
+gsap.from(".hero", { scale: 0.8, opacity: 0, delay: 0.5 });
+
+B. Infinite Loop Animation
+
+Example : 
+
+gsap.to(".logo", {
+  rotation: 360,
+  duration: 3,
+  repeat: -1, // Infinite loop
+  ease: "linear"
+});
+
+
+C. Interactive Animations (Play/Pause)
+
+Example : 
+
+const anim = gsap.to(".box", { x: 300 });
+
+// Control with:
+anim.play();
+anim.pause();
+anim.reverse();
+anim.restart();
+
+6. Resources
+
+Official Docs: https://greensock.com/docs/
+
+GSAP Ease Visualizer: https://greensock.com/ease-visualizer/
+
+ScrollTrigger Demos: https://greensock.com/scrolltrigger/
+
